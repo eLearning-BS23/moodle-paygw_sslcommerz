@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>.extlib/sslcommerz-php</location>
+        <name>sslcommerz PHP bindings</name>
+        <version>7.78.0</version>
+        <license>MIT License</license>
+        <licenseversion>1</licenseversion>
+    </library>
+</libraries>
