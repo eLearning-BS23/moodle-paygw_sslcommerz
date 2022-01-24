@@ -46,4 +46,8 @@ You can download zip file and install or you can put file under enrol as sslcomm
 - Go to the course you wish to enable payment for, and add the 'Enrolment on payment' enrolment method to the course.
 - Select a payment account, amend the enrolment fee as necessary then click the button 'Add method'
 
+Click the eye icon opposite Enrolment on payment.
+
+![enable Enrolment on Payment](https://user-images.githubusercontent.com/97436713/150732364-f39bae07-d654-49fe-a2a1-d3015c707acc.png)
+
 
