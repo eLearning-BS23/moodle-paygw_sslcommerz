@@ -8,4 +8,19 @@ Moodle Enrol Sslcommerz is a Moodle enrollment plugin based on `SSLCOMMERZ` paym
 <img src="https://i.imgur.com/QH1SUwO.jpg">
 </p>
 
+## Features
+- Support all Bangladeshi Bank 
+- Support All Bangladeshi Mobile Banking
+- Easy Integration
+- Personalised payment experience
+- Secure OTP based access to save cards
+- Bi-lingual Support
+- Add vat or surcharge
+
+## Configuration
+
+You can install this plugin from [Moodle plugins directory](https://moodle.org/plugins) or can download from [Github](https://github.com/eLearning-BS23/paygw_sslcommerz).
+
+You can download zip file and install or you can put file under enrol as sslcommerz
+
 
