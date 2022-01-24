@@ -50,4 +50,6 @@ Click the eye icon opposite Enrolment on payment.
 
 ![enable Enrolment on Payment](https://user-images.githubusercontent.com/97436713/150732364-f39bae07-d654-49fe-a2a1-d3015c707acc.png)
 
+To manage payment gateways click on the settings configure as required then click the 'Save changes' button.
+
 
