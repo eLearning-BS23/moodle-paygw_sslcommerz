@@ -38,3 +38,12 @@ You can download zip file and install or you can put file under enrol as sslcomm
 - Done!
 
 ![settings page](https://user-images.githubusercontent.com/97436713/150731059-4900ac21-169a-4bae-a4ec-999b9ba8a719.png)
+
+## Enrolment settings: 
+
+- Go to Site administration > Plugins > Enrolments > Manage enrol plugins and click the eye icon opposite Enrolment on payment.
+- Click the settings link, configure as required then click the 'Save changes' button.
+- Go to the course you wish to enable payment for, and add the 'Enrolment on payment' enrolment method to the course.
+- Select a payment account, amend the enrolment fee as necessary then click the button 'Add method'
+
+
