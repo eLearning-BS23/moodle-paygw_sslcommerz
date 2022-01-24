@@ -67,3 +67,13 @@ select any payment method:
 Finally your payment is now successful.
 
 ![Screenshot from 2022-01-20 21-29-13](https://user-images.githubusercontent.com/97436713/150734685-5d3f1696-034c-498f-abf6-613f0d1ab4c7.png)
+
+## Author
+- [Brain Station 23 Ltd.](https://brainstation-23.com)
+
+## License
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see [GNU License](http://www.gnu.org/licenses/).
