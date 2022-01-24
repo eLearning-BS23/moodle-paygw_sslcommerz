@@ -23,4 +23,16 @@ You can install this plugin from [Moodle plugins directory](https://moodle.org/p
 
 You can download zip file and install or you can put file under enrol as sslcommerz
 
-
+## Plugin Global Settings
+### Go to 
+```
+  Dashboard->Site administration->Plugins->Enrolments->sslcommerz settings
+```
+- Insert the SSLCOMMERZ api v3 url
+  https://sandbox.sslcommerz.com/gwprocess/v3/api.php
+- Insert sslcommerz validetion url 
+  https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+- Insert the Store id that provided by sslcommerz
+- Insert Store Password provided by sslcommerz
+- insert production environment like sandbox or live server 
+- Done!
