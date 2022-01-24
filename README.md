@@ -36,3 +36,5 @@ You can download zip file and install or you can put file under enrol as sslcomm
 - Insert Store Password provided by sslcommerz
 - insert production environment like sandbox or live server 
 - Done!
+
+![settings page](https://user-images.githubusercontent.com/97436713/150731059-4900ac21-169a-4bae-a4ec-999b9ba8a719.png)
