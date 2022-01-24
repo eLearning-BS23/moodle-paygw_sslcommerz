@@ -52,4 +52,12 @@ Click the eye icon opposite Enrolment on payment.
 
 To manage payment gateways click on the settings configure as required then click the 'Save changes' button.
 
+![enable payment gateway](https://user-images.githubusercontent.com/97436713/150734313-7c564f4a-0cbb-4efc-b29e-3058806a77b1.png)
 
+Now click on the course page and select any payment method or type
+
+![course page](https://user-images.githubusercontent.com/97436713/150734644-1ee7a5c0-1e18-4e94-82a8-904f35b8acc4.png)
+
+![sslcommerz choose option](https://user-images.githubusercontent.com/97436713/150734426-96c6ae7e-f9b1-410f-a11f-a4453ccd3597.png)
+
+![Screenshot from 2022-01-20 21-28-17](https://user-images.githubusercontent.com/97436713/150734465-7192e4e6-583a-4b19-b1b8-541f1a97167c.png)
