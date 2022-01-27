@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <libraries>
     <library>
-        <location>.extlib/sslcommerz-php</location>
+        <location>sslcommerz/classes/sslcommerz_helper</location>
         <name>sslcommerz PHP bindings</name>
         <version>7.78.0</version>
         <license>MIT License</license>
