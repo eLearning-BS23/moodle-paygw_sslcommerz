@@ -23,10 +23,9 @@
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace paygw_sslcommerz;
 
 defined('MOODLE_INTERNAL') || die();
-
-namespace paygw_sslcommerz;
 
 use sslcommerz\Exception\ApiErrorException;
 use sslcommerz\sslcommerzClient;
