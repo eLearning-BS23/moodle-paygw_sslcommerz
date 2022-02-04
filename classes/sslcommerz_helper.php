@@ -136,7 +136,6 @@ class sslcommerz_helper
         $data->payment_status = 'Processing';
         $data->txn_id = $postdata['tran_id'];
         $data->timeupdated = time();
-
         $DB->insert_record('paygw_sslcommerz', $data);
 
         // REQUEST SEND TO SSLCOMMERZ.
@@ -161,11 +160,6 @@ class sslcommerz_helper
             echo 'FAILED TO CONNECT WITH SSLCOMMERZ API';
             exit;
         }
-
-        $_SESSION['courseid'] = $courseid;
-        $_SESSION['itemid'] = $itemid;
-        $_SESSION['userid'] = $USER->id;
-        session_start();
 
         // PARSE THE JSON RESPONSE.
         $sslcz = json_decode($sslcommerzresponse, true);
