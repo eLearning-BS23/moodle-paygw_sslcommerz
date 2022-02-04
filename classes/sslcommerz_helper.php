@@ -106,11 +106,13 @@ class sslcommerz_helper
         $cuscity = $USER->city;
         $cuscountry = $USER->country;
         $cusphone = $USER->phone1;
+        $cusid = $USER->id;
 
         $postdata = [];
         $postdata['store_id'] = $this->storeid;
         $postdata['store_passwd'] = $this->storepassword;
         $postdata['total_amount'] = $cost;
+        $postdata['currency'] = $currency;
         $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
         $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/success.php?id=' . $courseid .
@@ -118,15 +120,16 @@ class sslcommerz_helper
             '&itemid=' . $itemid;
         $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/fail.php?id=' . $courseid;
         $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
-        $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid;
+        $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&userid=' . $cusid . '&component=' . $component . '&paymentarea=' . $paymentarea .
+            '&itemid=' . $itemid;;
 
         # CUSTOMER INFORMATION
-        $post_data['cus_name'] = $cusname;
-        $post_data['cus_email'] = $cusemail;
-        $post_data['cus_city'] = $cuscity;
-        $post_data['cus_state'] = $cuscity;
-        $post_data['cus_country'] = $cuscountry;
-        $post_data['cus_phone'] = $cusphone;
+        $postdata['cus_name'] = $cusname;
+        $postdata['cus_email'] = $cusemail;
+        $postdata['cus_city'] = $cuscity;
+        $postdata['cus_state'] = $cuscity;
+        $postdata['cus_country'] = $cuscountry;
+        $postdata['cus_phone'] = $cusphone;
 
         // REQUEST SEND TO SSLCOMMERZ.
         $directapiurl = $this->apiurl;
