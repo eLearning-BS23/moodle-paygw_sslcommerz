@@ -50,9 +50,7 @@ $sslcommerzhelper = new sslcommerz_helper(
     $config->paymentmodes
 );
 $sslcommerzhelper->generate_payment(
-    $config,
     $payable->get_currency(),
-    $description,
     $cost,
     $component,
     $paymentarea,
