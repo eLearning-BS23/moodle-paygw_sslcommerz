@@ -128,13 +128,7 @@ class sslcommerz_helper
         $postdata['cus_postcode'] = '1000';
         $postdata['cus_fax'] = '';
 
-        // OPTIONAL PARAMETERS.
-        $postdata['value_b'] = $courseid;
-        $postdata['value_c'] = $USER->id;
-        $postdata['value_d'] = $itemid;
-
         $data = new stdClass();
-
         $data->userid = $USER->id;
         $data->courseid = $courseid;
         $data->itemid = $itemid;
