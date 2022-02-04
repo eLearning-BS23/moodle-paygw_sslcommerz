@@ -92,9 +92,7 @@ class sslcommerz_helper
      * @throws ApiErrorException
      */
     public function generate_payment(
-        object $config,
         string $currency,
-        string $description,
         float $cost,
         string $component,
         string $paymentarea,
@@ -129,16 +127,6 @@ class sslcommerz_helper
         $post_data['cus_state'] = $cuscity;
         $post_data['cus_country'] = $cuscountry;
         $post_data['cus_phone'] = $cusphone;
-
-        $data = new stdClass();
-        $data->userid = $USER->id;
-        $data->courseid = $courseid;
-        $data->itemid = $itemid;
-        $data->currency = $currency;
-        $data->payment_status = 'Processing';
-        $data->txn_id = $postdata['tran_id'];
-        $data->timeupdated = time();
-        $DB->insert_record('paygw_sslcommerz', $data);
 
         // REQUEST SEND TO SSLCOMMERZ.
         $directapiurl = $this->apiurl;
