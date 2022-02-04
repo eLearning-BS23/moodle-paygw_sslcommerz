@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use core_payment\helper;
 
 require_login();
-require("../../config.php");
+require_once(__DIR__ . '/../../../config.php');
 global $DB, $USER;
 
 $component = required_param('component', PARAM_ALPHANUMEXT);
