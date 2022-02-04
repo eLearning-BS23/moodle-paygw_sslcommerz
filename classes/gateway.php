@@ -35,7 +35,8 @@ use core_payment\form\account_gateway;
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gateway extends \core_payment\gateway {
+class gateway extends \core_payment\gateway
+{
     /**
      * The full list of currencies supported by sslcommerz regardless of account origin country.
      * Only certain currencies are supported based on the users account, the plugin does not account for that
@@ -45,7 +46,8 @@ class gateway extends \core_payment\gateway {
      *
      * @return string[]
      */
-    public static function get_supported_currencies(): array {
+    public static function get_supported_currencies(): array
+    {
         return [
             'BDT', 'EUR', 'GBP', 'AUD', 'USD', 'CAD'
         ];
@@ -58,10 +60,10 @@ class gateway extends \core_payment\gateway {
      *
      * @return string[]
      */
-    public static function get_zero_decimal_currencies(): array {
-        return [
-            'BDT', 'EUR', 'GBP', 'AUD', 'USD', 'CAD'
-        ];
+    public static function get_zero_decimal_currencies(): array
+    {
+        // sslcommerz does not support any zero decimal currencies 
+        return [];
     }
 
     /**
@@ -71,7 +73,8 @@ class gateway extends \core_payment\gateway {
      *
      * @param account_gateway $form
      */
-    public static function add_configuration_to_gateway_form(account_gateway $form): void {
+    public static function add_configuration_to_gateway_form(account_gateway $form): void
+    {
         $mform = $form->get_mform();
 
         $mform->addElement('text', 'apiurl', get_string('apiurl', 'paygw_sslcommerz'));
@@ -82,19 +85,19 @@ class gateway extends \core_payment\gateway {
         $mform->setType('requestedurl', PARAM_TEXT);
         $mform->addHelpButton('requestedurl', 'requestedurl', 'paygw_sslcommerz');
 
-        $mform->addElement('text', 'businessstoreid', get_string('businessstoreid', 'paygw_sslcommerz'));
-        $mform->setType('businessstoreid', PARAM_TEXT);
-        $mform->addHelpButton('businessstoreid', 'businessstoreid', 'paygw_sslcommerz');
+        $mform->addElement('text', 'storeid', get_string('storeid', 'paygw_sslcommerz'));
+        $mform->setType('storeid', PARAM_TEXT);
 
-        $mform->addElement('text', 'businessstorepassword', get_string('businessstorepassword', 'paygw_sslcommerz'));
-        $mform->setType('businessstorepassword', PARAM_TEXT);
-        $mform->addHelpButton('businessstorepassword', 'businessstorepassword', 'paygw_sslcommerz');
+        $mform->addElement('text', 'storepassword', get_string('storepassword', 'paygw_sslcommerz'));
+        $mform->setType('storepassword', PARAM_TEXT);
 
-        $mform->addElement('select', 'productionenv', get_string('productionenv', 'paygw_sslcommerz'), [
-            'false' => get_string('taxbehavior:sandbox', 'paygw_sslcommerz'),
-            'true' => get_string('taxbehavior:live', 'paygw_sslcommerz'),
-        ]);
-        $mform->addHelpButton('productionenv', 'productionenv', 'paygw_sslcommerz');
+        $paymentmodes = [
+            'sandbox' => get_string('paymentmodes:sandbox', 'paygw_sslcommerz'),
+            'live' => get_string('paymentmodes:live', 'paygw_sslcommerz'),
+        ];
+        $mform->addElement('select', 'paymentmodes', get_string('paymentmodes', 'paygw_sslcommerz'), $paymentmodes);
+        $mform->setType('paymentmodes', PARAM_TEXT);
+        $mform->setDefault('paymentmodes', 'sandbox');
     }
 
     /**
@@ -105,11 +108,15 @@ class gateway extends \core_payment\gateway {
      * @param array $files
      * @param array $errors form errors (passed by reference)
      */
-    public static function validate_gateway_form(account_gateway $form,
-        \stdClass $data, array $files, array &$errors): void {
+    public static function validate_gateway_form(
+        account_gateway $form,
+        \stdClass $data,
+        array $files,
+        array &$errors
+    ): void {
         if ($data->enabled && (empty($data->apiurl) || empty($data->requestedurl)
-                || empty($data->businessstoreid) || empty($data->businessstorepassword)
-                || empty($data->productionenv))) {
+            || empty($data->storeid) || empty($data->storepassword)
+            || empty($data->paymentmodes))) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
         }
     }
