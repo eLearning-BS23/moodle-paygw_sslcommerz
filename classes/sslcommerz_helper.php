@@ -105,7 +105,6 @@ class sslcommerz_helper
 
         $cusname = $USER->firstname . ' ' . $USER->lastname;
         $cusemail = $USER->email;
-        $cusadd1 = $USER->address;
         $cuscity = $USER->city;
         $cuscountry = $USER->country;
         $cusphone = $USER->phone1;
@@ -123,10 +122,13 @@ class sslcommerz_helper
         $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
         $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid;
 
-        $postdata['cus_add2'] = '';
-        $postdata['cus_state'] = '';
-        $postdata['cus_postcode'] = '1000';
-        $postdata['cus_fax'] = '';
+        # CUSTOMER INFORMATION
+        $post_data['cus_name'] = $cusname;
+        $post_data['cus_email'] = $cusemail;
+        $post_data['cus_city'] = $cuscity;
+        $post_data['cus_state'] = $cuscity;
+        $post_data['cus_country'] = $cuscountry;
+        $post_data['cus_phone'] = $cusphone;
 
         $data = new stdClass();
         $data->userid = $USER->id;
