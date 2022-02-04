@@ -23,17 +23,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_payment\helper;
 
-require_login();
 require_once(__DIR__ . '/../../../config.php');
-global $DB, $USER;
+global $DB, $CFG, $USER;
+require_login();
 
 $component = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid = required_param('itemid', PARAM_INT);
+$courseid = required_param('id', PARAM_INT);
+
 $config     = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'sslcommerz');
 
 $valid = urlencode($_POST['val_id']);
@@ -58,27 +58,30 @@ if ($code == 200 && !(curl_errno($handle))) {
 
     # TO CONVERT AS OBJECT
     $result = json_decode($result);
-    die(var_dump($result));
+
     # TRANSACTION INFO
     $status = $result->status;
     $trandate = $result->tran_date;
     $tranid = $result->tran_id;
+    $valid = $result->val_id;
     $amount = $result->amount;
+    $storeamount = $result->store_amount;
     $banktranid = $result->bank_tran_id;
     $cardtype = $result->card_type;
-    $courseid = $result->value_d;
 
     //databaseinfo
     $data = new stdClass();
     $data->userid = $USER->id;
     $data->courseid = $courseid;
     $data->itemid = $itemid;
-    $data->currency = $currency;
+    $data->currency = $result->currency;
     $data->payment_status = $status;
     $data->txn_id = $tranid;
-    $data->timeupdated = $trandate;
+    $data->timeupdated = time();
+
     $DB->insert_record('paygw_sslcommerz', $data);
 
+    // course enrollment
     if ($status == "VALID") {
         header("Location: " . $CFG->wwwroot .
             '/payment/gateway/sslcommerz/success.php?id=' . $courseid .
@@ -91,6 +94,5 @@ if ($code == 200 && !(curl_errno($handle))) {
         exit();
     }
 } else {
-
     echo "Failed to connect with SSLCOMMERZ";
 }

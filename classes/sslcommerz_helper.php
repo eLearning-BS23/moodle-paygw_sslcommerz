@@ -115,7 +115,7 @@ class sslcommerz_helper
         $postdata['currency'] = $currency;
         $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
-        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?component=' . $component .
+        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
         $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
         $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
