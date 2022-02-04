@@ -27,17 +27,13 @@ defined('MOODLE_INTERNAL') || die();
 
 use core_payment\helper;
 
-// @codingStandardsIgnoreLine This script does not require login.
+require_login();
 require("../../config.php");
-global $DB;
+global $DB, $USER;
 
 $component = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid = required_param('itemid', PARAM_INT);
-
-$courseid   = required_param('courseid', PARAM_TEXT);
-$userid   = required_param('userid', PARAM_TEXT);
-
 $config     = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'sslcommerz');
 
 $valid = urlencode($_POST['val_id']);
@@ -62,27 +58,38 @@ if ($code == 200 && !(curl_errno($handle))) {
 
     # TO CONVERT AS OBJECT
     $result = json_decode($result);
-
+    die(var_dump($result));
     # TRANSACTION INFO
     $status = $result->status;
     $trandate = $result->tran_date;
     $tranid = $result->tran_id;
-    $valid = $result->val_id;
     $amount = $result->amount;
-    $storeamount = $result->store_amount;
     $banktranid = $result->bank_tran_id;
     $cardtype = $result->card_type;
+    $courseid = $result->value_d;
 
     //databaseinfo
     $data = new stdClass();
-    $data->userid = $userid;
+    $data->userid = $USER->id;
     $data->courseid = $courseid;
     $data->itemid = $itemid;
     $data->currency = $currency;
     $data->payment_status = $status;
     $data->txn_id = $tranid;
-    $data->timeupdated = time();
+    $data->timeupdated = $trandate;
     $DB->insert_record('paygw_sslcommerz', $data);
+
+    if ($status == "VALID") {
+        header("Location: " . $CFG->wwwroot .
+            '/payment/gateway/sslcommerz/success.php?id=' . $courseid .
+            '&component=' . $component . '&paymentarea=' . $paymentarea .
+            '&itemid=' . $itemid);
+        exit();
+    } else {
+        header("Location: " . $CFG->wwwroot .
+            '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid);
+        exit();
+    }
 } else {
 
     echo "Failed to connect with SSLCOMMERZ";
