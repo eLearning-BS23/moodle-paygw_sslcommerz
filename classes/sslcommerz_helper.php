@@ -97,7 +97,8 @@ class sslcommerz_helper
         string $component,
         string $paymentarea,
         string $itemid,
-        int $courseid
+        int $courseid,
+        bool $localpc
     ): void {
         global $CFG, $USER;
 
@@ -117,7 +118,8 @@ class sslcommerz_helper
 
         $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
+        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
+            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
         $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
         //$postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php';
 
@@ -142,7 +144,7 @@ class sslcommerz_helper
         curl_setopt($handle, CURLOPT_POST, 1);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $this->paymentmodes); // KEEP IT FALSE IF YOU RUN FROM LOCAL PC.
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $localpc); // KEEP IT FALSE IF YOU RUN FROM LOCAL PC.
 
         $content = curl_exec($handle);
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);

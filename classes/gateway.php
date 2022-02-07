@@ -103,7 +103,7 @@ class gateway extends \core_payment\gateway
             true => get_string('false', 'paygw_sslcommerz'),
             false => get_string('true', 'paygw_sslcommerz'),
         ];
-        $mform->addElement('select', 'localpc', get_string('paymentmodes', 'paygw_sslcommerz'), $paymentmodes);
+        $mform->addElement('select', 'localpc', get_string('localpc', 'paygw_sslcommerz'), $paymentmodes);
         $mform->setType('localpc', PARAM_TEXT);
         $mform->setDefault('localpc', false);
     }
