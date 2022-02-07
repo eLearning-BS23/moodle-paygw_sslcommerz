@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * sslcommerz enrolments plugin settings and presets.
+ * Handles success requests for sslcommerz paygw 
  *
  * @package    paygw_sslcommerz
  * @copyright  2021 Brain station 23 ltd.
