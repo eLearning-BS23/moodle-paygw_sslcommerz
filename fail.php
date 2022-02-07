@@ -36,4 +36,3 @@ require_once($CFG->dirroot . '/course/lib.php');
 
 $url = new moodle_url('/course');
 redirect($url, get_string('paymentfailed', 'paygw_sslcommerz'), 0, 'failed');
-

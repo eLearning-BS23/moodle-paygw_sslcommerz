@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * sslcommerz enrolments plugin settings and presets.
+ * Handles success requests for sslcommerz paygw 
  *
  * @package    paygw_sslcommerz
  * @copyright  2021 Brain station 23 ltd.
@@ -23,29 +23,40 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("../../../config.php");
+use core_payment\helper;
+
+require_once(__DIR__ . '/../../../config.php');
+require_once($CFG->dirroot . '/course/lib.php');
 require_login();
 
-use core_payment\helper;
-use paygw_sslcommerz\sslcommerz_helper;
+$component = required_param('component', PARAM_ALPHANUMEXT);
+$paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
+$itemid = required_param('itemid', PARAM_INT);
 
-global $DB, $USER, $OUTPUT, $CFG, $PAGE;
+// Deliver course.
+$payable = helper::get_payable($component, $paymentarea, $itemid);
+$cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('portwallet'));
+$paymentid = helper::save_payment(
+    $payable->get_account_id(),
+    $component,
+    $paymentarea,
+    $itemid,
+    $USER->id,
+    $cost,
+    $payable->get_currency(),
+    'portwallet'
+);
+helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $USER->id);
 
-require_once($CFG->dirroot . '/course/lib.php');
-
-$courseid = $_SESSION['courseid'];
-$itemid = $_SESSION['itemid'];
-$userid = $_SESSION['userid'];
-
-
-$data = $DB->get_record('paygw_sslcommerz', array("userid" => $userid, "courseid" => $courseid), '*', IGNORE_MULTIPLE);
-
-$url = new moodle_url('/course/view.php?id='. $courseid);
-
-$plugin = enrol_get_plugin('fee');
-$plugininstance = $DB->get_record("enrol", array("id" => $data->itemid, "enrol" => "fee", "status" => 0));
-
-$plugin->enrol_user($plugininstance, $userid, $plugininstance->roleid);
-
-redirect($url, get_string('paymentsuccessful', 'paygw_sslcommerz'), 0, 'success');
-
+// Find redirection.
+$url = new moodle_url('/');
+// Method only exists in 3.11+.
+if (method_exists('\core_payment\helper', 'get_success_url')) {
+    $url = helper::get_success_url($component, $paymentarea, $itemid);
+} else if ($component == 'enrol_fee' && $paymentarea == 'fee') {
+    $courseid = $DB->get_field('enrol', 'courseid', ['enrol' => 'fee', 'id' => $itemid]);
+    if (!empty($courseid)) {
+        $url = course_get_url($courseid);
+    }
+}
+redirect($url, get_string('paymentsuccessful', 'paygw_portwallet'), 0, 'success');

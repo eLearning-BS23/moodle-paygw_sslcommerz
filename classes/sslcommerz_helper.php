@@ -23,12 +23,11 @@
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace paygw_sslcommerz;
 
 defined('MOODLE_INTERNAL') || die();
 
-use sslcommerz\Exception\ApiErrorException;
-use sslcommerz\sslcommerzClient;
 use stdClass;
 
 /**
@@ -39,10 +38,6 @@ use stdClass;
  */
 class sslcommerz_helper
 {
-    /**
-     * @var sslcommerzClient secret API key (Do not publish)
-     */
-    private $sslcommerz;
     /**
      * @var string public API key
      */
@@ -56,33 +51,37 @@ class sslcommerz_helper
     /**
      * @var string public business store ID
      */
-    private $businessstoreid;
+    private $storeid;
 
     /**
      * @var string public business store password
      */
-    private $businessstorepassword;
+    private $storepassword;
 
     /**
      * @var string public production environment
      */
-    private $productionenv;
+    private $paymentmodes;
 
     /**
      * Initialise the sslcommerz API client.
      *
      * @param string $businessstoreid       the business store id
      * @param string $businessstorepassword business store password
-     * @param bool   $productionenv         whether we are working with the sandbox environment or not
+     * @param bool   $paymentmodes         whether we are working with the sandbox environment or not
      */
-    public function __construct(string $apiurl, string $requestedurl, string $businessstoreid,
-                                string $businessstorepassword, bool $productionenv)
-    {
+    public function __construct(
+        string $apiurl,
+        string $requestedurl,
+        string $businessstoreid,
+        string $businessstorepassword,
+        bool $paymentmodes
+    ) {
         $this->apiurl = $apiurl;
         $this->requestedurl = $requestedurl;
-        $this->businessstoreid = $businessstoreid;
-        $this->businessstorepassword = $businessstorepassword;
-        $this->productionenv = $productionenv;
+        $this->storeid = $businessstoreid;
+        $this->storepassword = $businessstorepassword;
+        $this->paymentmodes = $paymentmodes;
     }
 
     /**
@@ -92,57 +91,51 @@ class sslcommerz_helper
      *
      * @throws ApiErrorException
      */
-    public function generate_payment(object $config, string $currency, string $description, float $cost, string $component,
-        string $paymentarea, string $itemid, int $courseid): void
-    {
-        global $CFG, $USER, $DB;
-        $unitamount = $this->get_unit_amount($cost, $currency); // Price with surcharge.
+    public function generate_payment(
+        string $currency,
+        float $cost,
+        string $component,
+        string $paymentarea,
+        string $itemid,
+        int $courseid,
+        bool $localpc
+    ): void {
+        global $CFG, $USER;
 
-        $currency = strtolower($currency);
-
-        $cus_name = $USER->firstname.' '.$USER->lastname;
-        $cus_email = $USER->email;
-        $cus_add1 = $USER->address;
-        $cus_city = $USER->city;
-        $cus_country = $USER->country;
-        $cus_phone = $USER->phone1;
-        $productionenv = $config->productionenv;
+        $cusname = $USER->firstname . ' ' . $USER->lastname;
+        $cusemail = $USER->email;
+        $cuscity = $USER->city;
+        $cuscountry = $USER->country;
+        $cusphone = $USER->phone1;
+        $cusid = $USER->id;
 
         $postdata = [];
-        $postdata['store_id'] = $config->businessstoreid;
-        $postdata['store_passwd'] = $config->businessstorepassword;
-        $postdata['total_amount'] = $unitamount;
-        $postdata['tran_id'] = 'MD_COURSE_'.uniqid();
+        $postdata['store_id'] = $this->storeid;
+        $postdata['store_passwd'] = $this->storepassword;
+        $postdata['total_amount'] = $cost;
+        $postdata['currency'] = $currency;
+        $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
-        $postdata['success_url'] = $CFG->wwwroot.'/payment/gateway/sslcommerz/success.php?id='.$courseid;
-        $postdata['fail_url'] = $CFG->wwwroot.'/payment/gateway/sslcommerz/fail.php?id='.$courseid;
-        $postdata['cancel_url'] = $CFG->wwwroot.'/payment/gateway/sslcommerz/cancel.php?id='.$courseid;
-        $postdata['ipn_url'] = $CFG->wwwroot.'/payment/gateway/sslcommerz/ipn.php?id='.$courseid;
+        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
+            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
+        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
+            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
+        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
+        //$postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php';
 
-        $postdata['cus_add2'] = '';
-        $postdata['cus_state'] = '';
-        $postdata['cus_postcode'] = '1000';
-        $postdata['cus_fax'] = '';
+        # CUSTOMER INFORMATION
+        $postdata['cus_name'] = $cusname;
+        $postdata['cus_email'] = $cusemail;
+        $postdata['cus_city'] = $cuscity;
+        $postdata['cus_state'] = $cuscity;
+        $postdata['cus_country'] = $cuscountry;
+        $postdata['cus_phone'] = $cusphone;
 
-        // OPTIONAL PARAMETERS.
-        $postdata['value_b'] = $courseid;
-        $postdata['value_c'] = $USER->id;
-        $postdata['value_d'] = $itemid;
-
-        $data = new stdClass();
-
-        $data->userid = $USER->id;
-        $data->courseid = $courseid;
-        $data->itemid = $itemid;
-        $data->currency = $currency;
-        $data->payment_status = 'Processing';
-        $data->txn_id = $postdata['tran_id'];
-        $data->timeupdated = time();
-
-        $DB->insert_record('paygw_sslcommerz', $data);
+        # SOME REQUIRED PARAMETERS
+        $post_data['value_d'] = $courseid;
 
         // REQUEST SEND TO SSLCOMMERZ.
-        $directapiurl = $config->apiurl;
+        $directapiurl = $this->apiurl;
 
         $handle = curl_init();
         curl_setopt($handle, CURLOPT_URL, $directapiurl);   // The URL to fetch.
@@ -151,7 +144,7 @@ class sslcommerz_helper
         curl_setopt($handle, CURLOPT_POST, 1);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $productionenv); // KEEP IT FALSE IF YOU RUN FROM LOCAL PC.
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $localpc); // KEEP IT FALSE IF YOU RUN FROM LOCAL PC.
 
         $content = curl_exec($handle);
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
@@ -164,31 +157,14 @@ class sslcommerz_helper
             exit;
         }
 
-        $_SESSION['courseid'] = $courseid;
-        $_SESSION['itemid'] = $itemid;
-        $_SESSION['userid'] = $USER->id;
-        session_start();
-
         // PARSE THE JSON RESPONSE.
         $sslcz = json_decode($sslcommerzresponse, true);
         if (isset($sslcz['GatewayPageURL']) && $sslcz['GatewayPageURL'] != '') {
             // THERE ARE MANY WAYS TO REDIRECT - Javascript, Meta Tag or Php Header Redirect or Other.
-            echo "<meta http-equiv='refresh' content='0;url=".$sslcz['GatewayPageURL']."'>";
+            echo "<meta http-equiv='refresh' content='0;url=" . $sslcz['GatewayPageURL'] . "'>";
             exit;
         } else {
             echo 'JSON Data parsing error!';
         }
-    }
-
-    /**
-     * Convert the cost into the unit amount accounting for zero-decimal currencies.
-     */
-    public function get_unit_amount(float $cost, string $currency): float
-    {
-        if (in_array($currency, gateway::get_zero_decimal_currencies())) {
-            return $cost;
-        }
-
-        return $cost * 100;
     }
 }

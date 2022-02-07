@@ -25,8 +25,6 @@
 
 use core_payment\helper;
 use paygw_sslcommerz\sslcommerz_helper;
-use paygw_sslcommerz\getvalue;
-
 
 require_once(__DIR__ . '/../../../config.php');
 
@@ -44,11 +42,19 @@ $payable    = helper::get_payable($component, $paymentarea, $itemid);
 $surcharge  = helper::get_gateway_surcharge('sslcommerz');
 $cost       = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-$sslcommerzhelper = new sslcommerz_helper($config->apiurl, $config->requestedurl, $config->businessstoreid,
-                                          $config->businessstorepassword, $config->productionenv);
-$sslcommerzhelper->generate_payment($config, $payable->get_currency(), $description, $cost, $component,
-                                    $paymentarea, $itemid, $courseid);
-
-
-
-
+$sslcommerzhelper = new sslcommerz_helper(
+    $config->apiurl,
+    $config->requestedurl,
+    $config->storeid,
+    $config->storepassword,
+    $config->paymentmodes
+);
+$sslcommerzhelper->generate_payment(
+    $payable->get_currency(),
+    $cost,
+    $component,
+    $paymentarea,
+    $itemid,
+    $courseid,
+    $config->localpc
+);

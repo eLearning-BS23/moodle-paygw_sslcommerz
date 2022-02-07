@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * sslcommerz enrolments plugin settings and presets.
+ * Handles fail or cancel requests of sslcommerz paygw.
  *
  * @package    paygw_sslcommerz
  * @copyright  2021 Brain station 23 ltd.
@@ -23,18 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core_payment\helper;
-use paygw_sslcommerz\sslcommerz_helper;
-
-
-require_once("../../../config.php");
+require_once(__DIR__ . '/../../../config.php');
+require_once($CFG->dirroot . '/course/lib.php');
 require_login();
 
-global $DB, $USER, $OUTPUT, $CFG, $PAGE;
+$courseid = required_param("id", PARAM_INT);
 
-require_once($CFG->dirroot . '/course/lib.php');
+$url = course_get_url($courseid);
 
-
-$url = new moodle_url('/course');
-redirect($url, get_string('paymentcancelled', 'paygw_sslcommerz'), 0, 'failed');
-
+redirect($url, get_string('paymentcancelled', 'paygw_portwallet'), null, \core\output\notification::NOTIFY_ERROR);
