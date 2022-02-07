@@ -55,5 +55,6 @@ $sslcommerzhelper->generate_payment(
     $component,
     $paymentarea,
     $itemid,
-    $courseid
+    $courseid,
+    $config->localpc
 );
