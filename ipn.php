@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * sslcommerz enrolments plugin settings and presets.
+ * sslcommerz instant payments notifications page
  *
  * @package    paygw_sslcommerz
  * @copyright  2021 Brain station 23 ltd.
@@ -44,8 +44,8 @@ $requestedurl = ("https://sandbox.sslcommerz.com/validator/api/validationserverA
 $handle = curl_init();
 curl_setopt($handle, CURLOPT_URL, $requestedurl);
 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false); # IF YOU RUN FROM LOCAL PC
-curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # IF YOU RUN FROM LOCAL PC
+curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, $config->localpc); # IF YOU RUN FROM LOCAL PC
+curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $config->localpc); # IF YOU RUN FROM LOCAL PC
 
 $result = curl_exec($handle);
 
@@ -75,6 +75,7 @@ if ($code == 200 && !(curl_errno($handle))) {
     $data->courseid = $courseid;
     $data->itemid = $itemid;
     $data->currency = $result->currency;
+    $data->amount = $amount;
     $data->payment_status = $status;
     $data->txn_id = $tranid;
     $data->timeupdated = time();
