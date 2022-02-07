@@ -39,3 +39,6 @@ $string['paymentmodes:live'] = 'Live';
 
 $string['gatewayname'] = 'SSLCommerz';
 $string['gatewaydescription'] = 'SSLCommerz is an authorised payment gateway provider for processing Mobile Banking, Credit Card, Internet Banking transactions.';
+
+$string['true'] = 'true';
+$string['false'] = 'false';
