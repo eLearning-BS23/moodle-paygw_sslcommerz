@@ -32,8 +32,8 @@ In this page you can add surcharge for the payments. After installing the plugin
 
 ![Surcharge](https://user-images.githubusercontent.com/40598386/153025062-b3e23135-1441-4889-a7c8-e7ae6fdfa5b1.png)
 
-##Configuring the SSLCommerz Gateway:
-###Step: 1
+## Configuring the SSLCommerz Gateway:
+### Step: 1
 
 ```
   Dashboard->Site Administration->Plugins->Payment Gateways->sslcommerz settings
@@ -48,7 +48,7 @@ In this page you can add surcharge for the payments. After installing the plugin
 - Insert production environment like sandbox or live server 
 - Click the "save changes" button to save the information
 
-##Step: 2 
+### Step: 2 
 - Go to the Manage Enrolment Plugins section from the site administration
 ```
   Dashboard->Site Administration->Plugins->Enrolments->Manage Enrol Plugins
@@ -57,7 +57,7 @@ In this page you can add surcharge for the payments. After installing the plugin
 ![enable Enrolment on Payment](https://user-images.githubusercontent.com/97436713/150732364-f39bae07-d654-49fe-a2a1-d3015c707acc.png)
 Enable Enrolment on payment by clicking the eye icon.
 
-##Step: 3
+### Step: 3
 
 Enable SSLCommerz to the payment gateways 
 
