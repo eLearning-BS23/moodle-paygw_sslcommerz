@@ -27,39 +27,45 @@ use core_payment\helper;
 
 require_once(__DIR__ . '/../../../config.php');
 global $DB, $CFG, $USER;
+
 require_login();
 
 $component = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid = required_param('itemid', PARAM_INT);
 $courseid = required_param('id', PARAM_INT);
+$valid = required_param('val_id', PARAM_INT);
 
 $config     = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'sslcommerz');
 
-$valid = urlencode($_POST['val_id']);
 $storeid = urlencode($config->storeid);
 $storepasswd = urlencode($config->storepassword);
-$requestedurl = ("https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=" . $valid . "&store_id=" . $storeid . "&store_passwd=" . $storepasswd . "&v=1&format=json");
+if ($config->paymentmodes == 'live') {
+    $localpc = true;
+    $requestedurl = "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php?val_id=" .
+        $valid . "&store_id=" . $storeid . "&store_passwd=" . $storepasswd . "&v=1&format=json";
+} else {
+    $localpc = false;
+    $requestedurl = "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=" .
+        $valid . "&store_id=" . $storeid . "&store_passwd=" . $storepasswd . "&v=1&format=json";
+}
+
 
 $handle = curl_init();
 curl_setopt($handle, CURLOPT_URL, $requestedurl);
 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, $config->localpc); # IF YOU RUN FROM LOCAL PC
-curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $config->localpc); # IF YOU RUN FROM LOCAL PC
+curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, $localpc); // IF YOU RUN FROM LOCAL PC.
+curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $localpc); // IF YOU RUN FROM LOCAL PC.
 
 $result = curl_exec($handle);
 
 $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 
 if ($code == 200 && !(curl_errno($handle))) {
-    # TO CONVERT AS ARRAY
-    # $result = json_decode($result, true);
-    # $status = $result['status'];
-
-    # TO CONVERT AS OBJECT
+    // TO CONVERT AS OBJECT.
     $result = json_decode($result);
 
-    # TRANSACTION INFO
+    // TRANSACTION INFO.
     $status = $result->status;
     $trandate = $result->tran_date;
     $tranid = $result->tran_id;
@@ -69,7 +75,7 @@ if ($code == 200 && !(curl_errno($handle))) {
     $banktranid = $result->bank_tran_id;
     $cardtype = $result->card_type;
 
-    //databaseinfo
+    // Databaseinfo.
     $data = new stdClass();
     $data->userid = $USER->id;
     $data->courseid = $courseid;
@@ -82,15 +88,15 @@ if ($code == 200 && !(curl_errno($handle))) {
 
     $DB->insert_record('paygw_sslcommerz', $data);
 
-    // course enrollment
+    // Course enrollment.
     if ($status == "VALID") {
-        header("Location: " . $CFG->wwwroot .
+        redirect($CFG->wwwroot .
             '/payment/gateway/sslcommerz/success.php?id=' . $courseid .
             '&component=' . $component . '&paymentarea=' . $paymentarea .
             '&itemid=' . $itemid);
         exit();
     } else {
-        header("Location: " . $CFG->wwwroot .
+        redirect($CFG->wwwroot .
             '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid);
         exit();
     }

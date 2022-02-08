@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -26,8 +25,6 @@
 
 namespace paygw_sslcommerz;
 
-defined('MOODLE_INTERNAL') || die();
-
 use stdClass;
 
 /**
@@ -36,17 +33,12 @@ use stdClass;
  * @copyright  2021 Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class sslcommerz_helper
-{
+class sslcommerz_helper {
     /**
      * @var string public API key
      */
     private $apiurl;
 
-    /**
-     * @var string public Requested URL
-     */
-    private $requestedurl;
 
     /**
      * @var string public business store ID
@@ -72,13 +64,11 @@ class sslcommerz_helper
      */
     public function __construct(
         string $apiurl,
-        string $requestedurl,
         string $businessstoreid,
         string $businessstorepassword,
         bool $paymentmodes
     ) {
         $this->apiurl = $apiurl;
-        $this->requestedurl = $requestedurl;
         $this->storeid = $businessstoreid;
         $this->storepassword = $businessstorepassword;
         $this->paymentmodes = $paymentmodes;
@@ -97,8 +87,7 @@ class sslcommerz_helper
         string $component,
         string $paymentarea,
         string $itemid,
-        int $courseid,
-        bool $localpc
+        int $courseid
     ): void {
         global $CFG, $USER;
 
@@ -116,14 +105,19 @@ class sslcommerz_helper
         $postdata['currency'] = $currency;
         $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
-        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
+        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
+        $courseid . '&component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' . $courseid . '&component=' . $component .
+        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
+        $courseid . '&component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid;
-        //$postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php';
+        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' .
+        $courseid;
+        $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
+        $courseid . '&component=' . $component .
+            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
 
-        # CUSTOMER INFORMATION
+        // CUSTOMER INFORMATION.
         $postdata['cus_name'] = $cusname;
         $postdata['cus_email'] = $cusemail;
         $postdata['cus_city'] = $cuscity;
@@ -131,11 +125,16 @@ class sslcommerz_helper
         $postdata['cus_country'] = $cuscountry;
         $postdata['cus_phone'] = $cusphone;
 
-        # SOME REQUIRED PARAMETERS
-        $post_data['value_d'] = $courseid;
+        // SOME REQUIRED PARAMETERS.
+        $postdata['value_d'] = $courseid;
 
         // REQUEST SEND TO SSLCOMMERZ.
         $directapiurl = $this->apiurl;
+        if ($this->paymentmodes == 'live') {
+            $localpc = true;
+        } else {
+            $localpc = false;
+        }
 
         $handle = curl_init();
         curl_setopt($handle, CURLOPT_URL, $directapiurl);   // The URL to fetch.

@@ -44,7 +44,6 @@ $cost       = helper::get_rounded_cost($payable->get_amount(), $payable->get_cur
 
 $sslcommerzhelper = new sslcommerz_helper(
     $config->apiurl,
-    $config->requestedurl,
     $config->storeid,
     $config->storepassword,
     $config->paymentmodes
@@ -55,6 +54,5 @@ $sslcommerzhelper->generate_payment(
     $component,
     $paymentarea,
     $itemid,
-    $courseid,
-    $config->localpc
+    $courseid
 );

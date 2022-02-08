@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Handles success requests for sslcommerz paygw 
+ * Handles success requests for sslcommerz paygw.
  *
  * @package    paygw_sslcommerz
  * @copyright  2021 Brain station 23 ltd.
@@ -35,7 +35,8 @@ $itemid = required_param('itemid', PARAM_INT);
 
 // Deliver course.
 $payable = helper::get_payable($component, $paymentarea, $itemid);
-$cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('portwallet'));
+$cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(),
+helper::get_gateway_surcharge('sslcommerz'));
 $paymentid = helper::save_payment(
     $payable->get_account_id(),
     $component,
@@ -44,7 +45,7 @@ $paymentid = helper::save_payment(
     $USER->id,
     $cost,
     $payable->get_currency(),
-    'portwallet'
+    'sslcommerz'
 );
 helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $USER->id);
 
@@ -59,4 +60,4 @@ if (method_exists('\core_payment\helper', 'get_success_url')) {
         $url = course_get_url($courseid);
     }
 }
-redirect($url, get_string('paymentsuccessful', 'paygw_portwallet'), 0, 'success');
+redirect($url, get_string('paymentsuccessful', 'paygw_sslcommerz'), 0, 'success');

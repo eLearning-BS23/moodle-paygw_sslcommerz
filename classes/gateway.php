@@ -35,8 +35,7 @@ use core_payment\form\account_gateway;
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gateway extends \core_payment\gateway
-{
+class gateway extends \core_payment\gateway {
     /**
      * The full list of currencies supported by sslcommerz regardless of account origin country.
      * Only certain currencies are supported based on the users account, the plugin does not account for that
@@ -46,8 +45,7 @@ class gateway extends \core_payment\gateway
      *
      * @return string[]
      */
-    public static function get_supported_currencies(): array
-    {
+    public static function get_supported_currencies(): array {
         return [
             'BDT', 'EUR', 'GBP', 'AUD', 'USD', 'CAD'
         ];
@@ -60,9 +58,7 @@ class gateway extends \core_payment\gateway
      *
      * @return string[]
      */
-    public static function get_zero_decimal_currencies(): array
-    {
-        // sslcommerz does not support any zero decimal currencies 
+    public static function get_zero_decimal_currencies(): array {
         return [];
     }
 
@@ -73,17 +69,12 @@ class gateway extends \core_payment\gateway
      *
      * @param account_gateway $form
      */
-    public static function add_configuration_to_gateway_form(account_gateway $form): void
-    {
+    public static function add_configuration_to_gateway_form(account_gateway $form): void {
         $mform = $form->get_mform();
 
         $mform->addElement('text', 'apiurl', get_string('apiurl', 'paygw_sslcommerz'));
         $mform->setType('apiurl', PARAM_TEXT);
         $mform->addHelpButton('apiurl', 'apiurl', 'paygw_sslcommerz');
-
-        $mform->addElement('text', 'requestedurl', get_string('requestedurl', 'paygw_sslcommerz'));
-        $mform->setType('requestedurl', PARAM_TEXT);
-        $mform->addHelpButton('requestedurl', 'requestedurl', 'paygw_sslcommerz');
 
         $mform->addElement('text', 'storeid', get_string('storeid', 'paygw_sslcommerz'));
         $mform->setType('storeid', PARAM_TEXT);
@@ -98,14 +89,6 @@ class gateway extends \core_payment\gateway
         $mform->addElement('select', 'paymentmodes', get_string('paymentmodes', 'paygw_sslcommerz'), $paymentmodes);
         $mform->setType('paymentmodes', PARAM_TEXT);
         $mform->setDefault('paymentmodes', 'sandbox');
-
-        $paymentmodes = [
-            true => get_string('false', 'paygw_sslcommerz'),
-            false => get_string('true', 'paygw_sslcommerz'),
-        ];
-        $mform->addElement('select', 'localpc', get_string('localpc', 'paygw_sslcommerz'), $paymentmodes);
-        $mform->setType('localpc', PARAM_TEXT);
-        $mform->setDefault('localpc', false);
     }
 
     /**
@@ -122,9 +105,11 @@ class gateway extends \core_payment\gateway
         array $files,
         array &$errors
     ): void {
-        if ($data->enabled && (empty($data->apiurl) || empty($data->requestedurl)
+
+        if ( !$data->enabled || empty($data->apiurl)
             || empty($data->storeid) || empty($data->storepassword)
-            || empty($data->paymentmodes))) {
+            || empty($data->paymentmodes)
+        ) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
         }
     }

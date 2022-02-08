@@ -25,10 +25,11 @@
 
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->dirroot . '/course/lib.php');
+
 require_login();
 
 $courseid = required_param("id", PARAM_INT);
 
 $url = course_get_url($courseid);
 
-redirect($url, get_string('paymentcancelled', 'paygw_portwallet'), null, \core\output\notification::NOTIFY_ERROR);
+redirect($url, get_string('paymentcancelled', 'paygw_sslcommerz'), null, \core\output\notification::NOTIFY_ERROR);

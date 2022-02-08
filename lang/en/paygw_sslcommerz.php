@@ -43,3 +43,5 @@ $string['gatewaydescription'] = 'SSLCommerz is an authorised payment gateway pro
 $string['true'] = 'true';
 $string['false'] = 'false';
 $string['localpc'] = 'Using from local pc';
+$string['paymentcancelled'] = 'Payment Cancelled';
+$string['paymentsuccessful'] = 'Payment Successful';
