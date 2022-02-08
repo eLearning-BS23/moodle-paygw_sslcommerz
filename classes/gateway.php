@@ -18,7 +18,7 @@
  * Contains class for sslcommerz payment gateway.
  *
  * @package    paygw_sslcommerz
- * @copyright  2021 Brain station 23 ltd.
+ * @copyright  2022 Brain station 23 ltd.
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

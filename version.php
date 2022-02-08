@@ -18,14 +18,15 @@
  * Version information
  *
  * @package    paygw_sslcommerz
- * @copyright  2021 Brain station 23 ltd.
+ * @copyright  2022 Brain station 23 ltd.
  * @author     Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022012102;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2022020900;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->release   = 'v1.0.1';
 $plugin->requires  = 2020050900;        // Requires this Moodle version.
 $plugin->component = 'paygw_sslcommerz';    // Full name of the plugin (used for diagnostics).
+$plugin->maturity = MATURITY_STABLE;

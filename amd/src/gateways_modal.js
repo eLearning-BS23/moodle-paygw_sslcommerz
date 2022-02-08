@@ -17,7 +17,7 @@
  * This module is responsible for sslcommerz content in the gateways modal.
  *
  * @module     paygw_sslcommerz/gateway_modal
- * @copyright  2021 Brain station 23 ltd.
+ * @copyright  2022 Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

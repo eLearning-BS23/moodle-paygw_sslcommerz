@@ -26,45 +26,71 @@ You can download zip file and install or you can put file under enrol as sslcomm
 ## Plugin Global Settings
 ### Go to 
 ```
-  Dashboard->Site administration->Plugins->Enrolments->sslcommerz settings
+  Dashboard->Site Administration->Plugins->Payment Gateways->sslcommerz settings
 ```
-- Insert the SSLCOMMERZ api v3 url
-  https://sandbox.sslcommerz.com/gwprocess/v3/api.php
-- Insert sslcommerz validetion url 
-  https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
-- Insert the Store id that provided by sslcommerz
-- Insert Store Password provided by sslcommerz
-- insert production environment like sandbox or live server 
-- Done!
+In this page you can add surcharge for the payments. After installing the plugin you'll automatically redirected to this page.
+
+![Surcharge](https://user-images.githubusercontent.com/40598386/153025062-b3e23135-1441-4889-a7c8-e7ae6fdfa5b1.png)
+
+##Configuring the SSLCommerz Gateway:
+###Step: 1
+
+```
+  Dashboard->Site Administration->Plugins->Payment Gateways->sslcommerz settings
+```
 
 ![settings page](https://user-images.githubusercontent.com/97436713/150731059-4900ac21-169a-4bae-a4ec-999b9ba8a719.png)
 
-## Enrolment settings: 
+- Insert the SSLCOMMERZ api v3 url https://sandbox.sslcommerz.com/gwprocess/v3/api.php
+- Insert sslcommerz validetion url https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+- Insert the Store id that provided by sslcommerz
+- Insert Store Password provided by sslcommerz
+- Insert production environment like sandbox or live server 
+- Click the "save changes" button to save the information
 
-- Go to Site administration > Plugins > Enrolments > Manage enrol plugins and click the eye icon opposite Enrolment on payment.
-- Click the settings link, configure as required then click the 'Save changes' button.
-- Go to the course you wish to enable payment for, and add the 'Enrolment on payment' enrolment method to the course.
-- Select a payment account, amend the enrolment fee as necessary then click the button 'Add method'
-
-Click the eye icon opposite Enrolment on payment:
+##Step: 2 
+- Go to the Manage Enrolment Plugins section from the site administration
+```
+  Dashboard->Site Administration->Plugins->Enrolments->Manage Enrol Plugins
+```
 
 ![enable Enrolment on Payment](https://user-images.githubusercontent.com/97436713/150732364-f39bae07-d654-49fe-a2a1-d3015c707acc.png)
+Enable Enrolment on payment by clicking the eye icon.
 
-To manage payment gateways click on the settings and configure as required:
+##Step: 3
+
+Enable SSLCommerz to the payment gateways 
+
+```
+  Dashboard->Site Administration->Plugins->Enrolments->Manage Enrol Plugins
+```
 
 ![enable payment gateway](https://user-images.githubusercontent.com/97436713/150734313-7c564f4a-0cbb-4efc-b29e-3058806a77b1.png)
 
-Now click on the course page and select payment type:
+
+## Enrolment Settings for Course: 
+
+Now click on the course page and add an enrolment method Enrolment of Payment.
+
+![ss](https://user-images.githubusercontent.com/40598386/153038411-0fa254ff-9578-4d2c-845d-7f25fb8958f3.png)
+
+and fill up this form below to set the amount of money and currency for the course payment
+
+![Screenshot from 2022-02-08 23-01-42](https://user-images.githubusercontent.com/40598386/153038786-be57e754-337e-4ed9-83d1-581c65a32c6b.png)
+
+This is how it looks like from a student's perspective:
 
 ![course page](https://user-images.githubusercontent.com/97436713/150734644-1ee7a5c0-1e18-4e94-82a8-904f35b8acc4.png)
 
+Select the Payment Type- SSLCommerz the surcharge is added with the course payment amount
+
 ![sslcommerz choose option](https://user-images.githubusercontent.com/97436713/150734426-96c6ae7e-f9b1-410f-a11f-a4453ccd3597.png)
 
-select any payment method:
+Select any payment method:
 
 ![Screenshot from 2022-01-20 21-28-17](https://user-images.githubusercontent.com/97436713/150734465-7192e4e6-583a-4b19-b1b8-541f1a97167c.png)
 
-Finally your payment is now successful.
+If you payment is successful then you'll be enrolled in the course
 
 ![Screenshot from 2022-01-20 21-29-13](https://user-images.githubusercontent.com/97436713/150734685-5d3f1696-034c-498f-abf6-613f0d1ab4c7.png)
 
