@@ -96,7 +96,6 @@ class sslcommerz_helper {
         $cuscity = $USER->city;
         $cuscountry = $USER->country;
         $cusphone = $USER->phone1;
-        $cusid = $USER->id;
 
         $postdata = [];
         $postdata['store_id'] = $this->storeid;
