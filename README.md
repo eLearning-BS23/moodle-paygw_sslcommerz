@@ -1,4 +1,4 @@
-# Moodle Payment Gateway Sslcommerz plugin
+# Moodle Payment Gateway SSLCommerz plugin
 
 SSLCOMMERZ is the largest payment gateway aggregator in Bangladesh and a pioneer in the FinTech industry. For more detail about `SSLCOMMERZ` please visit https://www.sslcommerz.com/.
 
