@@ -39,7 +39,7 @@ In this page you can add surcharge for the payments. After installing the plugin
   Dashboard->Site Administration->Plugins->Payment Gateways->sslcommerz settings
 ```
 
-![settings page](https://user-images.githubusercontent.com/97436713/150731059-4900ac21-169a-4bae-a4ec-999b9ba8a719.png)
+![image](https://user-images.githubusercontent.com/40598386/153416845-82e931fd-efdd-4eb5-8e75-d987d0011da9.png)
 
 - Insert the SSLCOMMERZ api v3 url https://sandbox.sslcommerz.com/gwprocess/v3/api.php
 - Insert sslcommerz validetion url https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
