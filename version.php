@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022020900;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->release   = 'v1.0.1';
+$plugin->version   = 2022020902;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->release   = 'v1.0.2';
 $plugin->requires  = 2020050900;        // Requires this Moodle version.
 $plugin->component = 'paygw_sslcommerz';    // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
