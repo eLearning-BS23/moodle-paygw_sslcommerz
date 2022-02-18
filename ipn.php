@@ -33,7 +33,6 @@ require_login();
 $component = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid = required_param('itemid', PARAM_INT);
-$courseid = required_param('id', PARAM_INT);
 $valid = urlencode($_POST['val_id']);
 
 $config     = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'sslcommerz');
@@ -78,7 +77,6 @@ if ($code == 200 && !(curl_errno($handle))) {
     // Databaseinfo.
     $data = new stdClass();
     $data->userid = $USER->id;
-    $data->courseid = $courseid;
     $data->itemid = $itemid;
     $data->currency = $result->currency;
     $data->amount = $amount;
@@ -91,8 +89,7 @@ if ($code == 200 && !(curl_errno($handle))) {
     // Course enrollment.
     if ($status == "VALID") {
         redirect($CFG->wwwroot .
-            '/payment/gateway/sslcommerz/success.php?id=' . $courseid .
-            '&component=' . $component . '&paymentarea=' . $paymentarea .
+            '/payment/gateway/sslcommerz/success.php?component=' . $component . '&paymentarea=' . $paymentarea .
             '&itemid=' . $itemid);
         exit();
     } else {
