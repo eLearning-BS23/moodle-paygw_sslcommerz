@@ -86,8 +86,7 @@ class sslcommerz_helper {
         float $cost,
         string $component,
         string $paymentarea,
-        string $itemid,
-        int $courseid
+        string $itemid
     ): void {
         global $CFG, $USER;
 
@@ -104,16 +103,11 @@ class sslcommerz_helper {
         $postdata['currency'] = $currency;
         $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
-        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
+        $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
+        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' .
-        $courseid;
-        $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
+        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
 
         // CUSTOMER INFORMATION.
@@ -123,9 +117,6 @@ class sslcommerz_helper {
         $postdata['cus_state'] = $cuscity;
         $postdata['cus_country'] = $cuscountry;
         $postdata['cus_phone'] = $cusphone;
-
-        // SOME REQUIRED PARAMETERS.
-        $postdata['value_d'] = $courseid;
 
         // REQUEST SEND TO SSLCOMMERZ.
         $directapiurl = $this->apiurl;
