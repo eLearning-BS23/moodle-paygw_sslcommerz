@@ -34,7 +34,7 @@ $component = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid = required_param('itemid', PARAM_INT);
 $courseid = required_param('id', PARAM_INT);
-$valid = required_param('val_id', PARAM_INT);
+$valid = urlencode($_POST['val_id']);
 
 $config     = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'sslcommerz');
 
@@ -97,7 +97,8 @@ if ($code == 200 && !(curl_errno($handle))) {
         exit();
     } else {
         redirect($CFG->wwwroot .
-            '/payment/gateway/sslcommerz/cancel.php?id=' . $courseid);
+            '/payment/gateway/sslcommerz/cancel.php?component=' . $component . '&paymentarea=' . $paymentarea .
+            '&itemid=' . $itemid);
         exit();
     }
 } else {

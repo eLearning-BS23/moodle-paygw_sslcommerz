@@ -33,7 +33,8 @@ use stdClass;
  * @copyright  2021 Brain station 23 ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class sslcommerz_helper {
+class sslcommerz_helper
+{
     /**
      * @var string public API key
      */
@@ -105,16 +106,13 @@ class sslcommerz_helper {
         $postdata['tran_id'] = 'MD_COURSE_' . uniqid();
 
         $postdata['success_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
+            $courseid . '&component=' . $component .
             '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
-            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
-        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?id=' .
-        $courseid;
-        $postdata['ipn_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/ipn.php?id=' .
-        $courseid . '&component=' . $component .
-            '&paymentarea=' . $paymentarea . '&itemid=' . $itemid;
+        $postdata['fail_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?component=' . $component . '&paymentarea=' . $paymentarea .
+            '&itemid=' . $itemid;
+        $postdata['cancel_url'] = $CFG->wwwroot . '/payment/gateway/sslcommerz/cancel.php?component=' . $component . '&paymentarea=' . $paymentarea .
+            '&itemid=' . $itemid;
+
 
         // CUSTOMER INFORMATION.
         $postdata['cus_name'] = $cusname;
